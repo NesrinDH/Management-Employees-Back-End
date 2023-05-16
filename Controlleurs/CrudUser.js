@@ -6,6 +6,7 @@ import { sendEmail } from '../nodemailer.js';
 //.......... ADD USER...................
 export const addUser= async(req, res) => {
      //methode for generate password
+     //........................................
      const pass= 'hdgdtehkslhdgdslqmq1234'
       let generatedPassword= ''
       for (let i=0; i<8; i++) {
