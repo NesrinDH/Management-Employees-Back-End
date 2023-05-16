@@ -1,0 +1,1009 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Management-Employees-App",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authorization Users"
+    },
+    {
+      "name": "users",
+      "description": "Operations about user"
+    },
+    {
+      "name": "daysoffs",
+      "description": "Everything about day off"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login user",
+        "description": "Login user",
+        "operationId": "LoginUser",
+        "requestBody": {
+          "description": "Login user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "User not found !"
+          },
+          "401": {
+            "description": "Incorrect password !"
+          }
+        }
+      }
+    },
+    "/auth/forgetPassword": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "description": "Forgot  password user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Please check your email for reset your password!"
+          },
+          "404": {
+            "description": "User not exist !"
+          }
+        }
+      }
+    },
+    "/auth/resetPassword": {
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "description": "Reset user Password",
+        "operationId": "ResetUserPassword",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "token": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "password updated"
+          },
+          "404": {
+            "description": "User not found!"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Created a new user",
+        "description": "Created a new user",
+        "operationId": "CreatedNewUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "exemple"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "exemple"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "exemple@email.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "phone"
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "Software Engineer"
+                  },
+                  "building": {
+                    "type": "string",
+                    "example": "Front-End"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "avatar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request "
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get the list of all users",
+        "description": "Get the list of all users",
+        "operationId": "ListUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createdAtBefore",
+            "in": "query",
+            "description": "Filter users created before this date (YYYY-MM-DD format)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createdAtAfter",
+            "in": "query",
+            "description": "Filter users created after this date (YYYY-MM-DD format)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "succussffully updated ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "totalUsers": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "users": {
+                      "type": "array",
+                      "example": [
+                        {
+                          "_id": "string",
+                          "firstName": "string",
+                          "lastName": "string",
+                          "email": "exemple@email.com",
+                          "phone": "string",
+                          "role": "string",
+                          "building": "string",
+                          "avatar": "string",
+                          "isActive": true,
+                          "soldDays": 0,
+                          "allDaysoff": 0,
+                          "daysOffSick": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request "
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "description": "Get User By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request "
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user",
+        "description": "Update user",
+        "operationId": "UpdateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "firstName"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "lastName"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "phone"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "avatar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request "
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete user",
+        "description": "Delete user",
+        "operationId": "DeleteUsers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "firstName lastName is succussffully deleted"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/toggle-enable/{id}": {
+      "patch": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Toggle enable",
+        "description": "Toggle enable",
+        "operationId": "ToggleEnable",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Code is wrong !"
+          }
+        }
+      }
+    },
+    "/daysOff": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "summary": "Create a new days off ",
+        "description": "Create a new days off ",
+        "operationId": "AddDaysOff",
+        "requestBody": {
+          "description": "Created daysOff object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startDay": {
+                    "type": "string",
+                    "example": "2023-01-01"
+                  },
+                  "endDay": {
+                    "type": "string",
+                    "example": "2023-01-05"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "Paid"
+                  },
+                  "justificationSick": {
+                    "type": "string",
+                    "example": "medical certificate"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Days"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request "
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "summary": "Get the list of all days off",
+        "description": "Get the list of all days off",
+        "operationId": "ListDaysOff",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createdAtBefore",
+            "in": "query",
+            "description": "Filter users created before this date (YYYY-MM-DD format)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createdAtAfter",
+            "in": "query",
+            "description": "Filter users created after this date (YYYY-MM-DD format)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succussffully updated ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "totalDaysOff": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "daysOff": {
+                      "type": "array",
+                      "example": [
+                        {
+                          "decisionDir": {
+                            "status": true,
+                            "justification": "string"
+                          },
+                          "decisionMan": {
+                            "status": false,
+                            "justification": "string"
+                          },
+                          "_id": "string",
+                          "userId": "string",
+                          "startDay": "string",
+                          "endDay": "string",
+                          "type": "string",
+                          "statusReq": false,
+                          "decision": true,
+                          "reqDayOff": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "request not found !"
+          }
+        }
+      }
+    },
+    "/daysOff/{id}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "summary": "Get days off whose identifier is known",
+        "description": "Get days off whose identifier is known",
+        "operationId": "GetDaysOff",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Days"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "request not found !"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "description": "Update days off whose identifier is known",
+        "operationId": "UpdateDaysOff",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The request that needs to updated",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Request with new properties",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "startDay": {
+                    "type": "string",
+                    "example": "2023-01-18"
+                  },
+                  "endDay": {
+                    "type": "string",
+                    "example": "2023-01-22"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "justificationSick": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succussffully updated ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "startDay": {
+                      "type": "string",
+                      "example": "2023-01-01"
+                    },
+                    "endDay": {
+                      "type": "string",
+                      "example": "2023-10-01"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "Paid"
+                    },
+                    "justificationSick": {
+                      "type": "string",
+                      "example": "medical certificate"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "description": "Delete request whose identifier is known",
+        "operationId": "deleteRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The request that needs to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "days off is succussffully deleted"
+          },
+          "400": {
+            "description": "you can not remove this request!"
+          }
+        }
+      }
+    },
+    "/daysOff/decision/{id}": {
+      "patch": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "daysoffs"
+        ],
+        "summary": "Send decission of request",
+        "description": "Send decission of request",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The request that needs to answer",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Decision of request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "justification": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation "
+          },
+          "400": {
+            "description": "Bad request "
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "role",
+          "building",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "id":{
+            "type": "integer",
+            "example": 10
+          },
+          "firstName": {
+            "type": "string",
+            "example": "exemple"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "exemple"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "exemple@email.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "2345"
+          },
+          "role": {
+            "type": "string",
+            "example": "Software Engineer",
+            "enum": [
+              "Director",
+              "Administration Director",
+              "Administration Assistant",
+              "Team manager",
+              "Software Engineer",
+              "Super Admin"
+            ]
+          },
+          "building": {
+            "type": "string",
+            "example": "Front-End",
+            "enum": [
+              "Front-End",
+              "Back-End",
+              "Full-Stack"
+            ]
+          },
+          "avatar": {
+            "type": "string",
+            "example": "12345"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "soldDays": {
+            "type": "number",
+            "default": "0"
+          },
+          "allDaysoff": {
+            "type": "number",
+            "default": "0"
+          },
+          "daysOffSick": {
+            "type": "number",
+            "default": "0"
+          }
+        }
+      },
+      "Days": {
+        "required": [
+          "userId",
+          "startDay",
+          "endDay",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "string"
+          },
+          "startDay": {
+            "type": "string",
+            "example": "2023-01-18"
+          },
+          "endDay": {
+            "type": "string",
+            "example": "2023-01-22"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Paid",
+              "Unpaid",
+              "Sick"
+            ]
+          },
+          "decisionMan": {
+            "type": "object",
+            "properties": {
+              "userIdMan": {
+                "type": "string"
+              },
+              "status": {
+                "type": "boolean"
+              },
+              "justification": {
+                "type": "string"
+              }
+            }
+          },
+          "decisionDir": {
+            "type": "object",
+            "properties": {
+              "userIdDir": {
+                "type": "string"
+              },
+              "status": {
+                "type": "boolean"
+              },
+              "justification": {
+                "type": "string"
+              }
+            }
+          },
+          "statusReq": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "decision": {
+            "type": "string",
+            "example": "true"
+          },
+          "reqDayOff": {
+            "type": "number",
+            "example": "0"
+          },
+          "justificationSick": {
+            "type": "string",
+            "example": "sick"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "User": {
+        "description": "List of user object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "Days": {
+        "description": "List of daysOff object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/Days"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      }
+    }
+  }
+}
