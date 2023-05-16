@@ -1,4 +1,4 @@
-# App-manage-employees
+# App-management-employees
 The idea is about an app that can manage employees alongside their days off requests.
 <h2>Sections:</h2> </br>
 ● Employees management </br>
